@@ -1,0 +1,70 @@
+@forward "element-plus/theme-chalk/src/dark/var.scss" with (
+  $colors:(
+    // 这里定义在暗黑模式下 primary 的颜色，其他同理
+    "primary": ("base": green),
+  )
+);
+@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
+
+// elementplus组件之外的暗黑样式覆盖
+html.dark {
+  --dark-text-color:#fff;
+  --dark-bg-color:#000;
+  --dark-border-light: 1px solid #4c4c4d;
+
+  ::-webkit-scrollbar {
+    background-color: var(--el-scrollbar-bg-color) !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--el-border-color-darker) !important;
+  }
+
+  .layout_tabbar {
+    background-color: var(--dark-bg-color) !important;
+  }
+
+  .layout_main {
+    background-color: var(--dark-bg-color);
+
+    .dashboard-container {
+      background-color:var(--dark-bg-color);
+
+      .userDetail {
+        border-color: var(--el-border-color-light);
+      }
+    }
+
+    .chapterTitle {
+      .series .seriesTitle {
+        color:var(--el-text-color-regular);
+      }
+
+      .series .seriesDate {
+        color:var(--el-text-color-regular);
+      }
+
+      .flashBack {
+        color:var(--el-text-color-regular) !important;
+        
+      }
+    }
+
+    .chapterContent {
+      span {
+        background-color: var(--el-bg-color) !important;
+      }
+    }
+
+    .collectionLink {
+      background-color: var(--dark-bg-color);
+      border-color: var(--el-border-color-light);
+    }
+  }
+
+  .el-overlay {
+    .el-drawer__title {
+      color: var(--dark-text-color);
+    }
+  }
+}

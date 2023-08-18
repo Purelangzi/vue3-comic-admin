@@ -1,0 +1,31 @@
+{
+  "common": {
+    "home": "home",
+    "about": "About",
+    "tobeCoded": "To be coded",
+    "signIn": "sign in",
+    "signUp": "sign out",
+    "logOutMessage": "Confirm to exit the system?",
+    "MessageTitle": "Warning",
+    "confirmButtonText": "OK",
+    "cancelButtonText": "Cancel",
+    "cancelMessageText": "Delete canceled"
+  },
+  "route": {
+    "home": "Home",
+    "漫画管理": "CartoonManager",
+    "漫画分类": "Category",
+    "漫画列表": "List",
+    "视频管理": "VideoManager",
+    "视频分类": "Category",
+    "视频列表": "List",
+    "数据中心": "Datacenter",
+    "漫画采集": "Collection",
+    "系统管理": "SystemManager",
+    "账号管理": "Account",
+    "角色管理": "Role",
+    "小说管理": "NovelManager",
+    "小说分类": "Category",
+    "小说列表": "List"
+  }
+}

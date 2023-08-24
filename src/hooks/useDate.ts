@@ -14,7 +14,7 @@ export function useTimePeriod() {
       return '晚上'
     }
   })
-  let timer: number
+  let timer: NodeJS.Timeout
   const updateCurrentTime = () => {
     currentTime.value = new Date()
     timer = setTimeout(updateCurrentTime, 1000)

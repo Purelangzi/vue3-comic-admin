@@ -54,7 +54,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ElNotification, FormInstance, FormRules } from 'element-plus'
+import { FormInstance, FormRules } from 'element-plus'
 import { useUserInfoStore } from '@/store/modules/user'
 import { useTimePeriod } from '@/hooks/useDate'
 const ruleFormRef = ref<FormInstance>()
@@ -92,7 +92,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         const message = await useUserStore[
           isLogin.value ? 'userLogin' : 'userRegister'
         ](form)
-
+        if (form.account) {
+        }
         // router.push('/')
         // 方法一：解决切换登录账号重定向到没权限的页面404，仍保留重定向之前页面的功能
         // 刚注册的账号服务器返回默认无权限为空，所以得加?
@@ -120,6 +121,13 @@ const submitForm = async (formEl: FormInstance | undefined) => {
             title: `Hi,${timePeriod.value}好`,
             message,
           })
+        } else {
+          ElMessage({
+            type: 'success',
+            message: '注册成功',
+            duration: 1300,
+          })
+          isLogin.value = true
         }
       } catch (error) {
         ElNotification.error((error as Error).message)

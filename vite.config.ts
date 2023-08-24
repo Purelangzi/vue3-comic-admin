@@ -14,6 +14,7 @@ import { cdn } from 'vite-plugin-cdn2'
 export default defineConfig(({ command, mode }: ConfigEnv) => {
   const isDev = mode === 'development'
   const isProd = mode === 'production'
+  const prodMock = true
   return {
     base: isDev ? './' : '/', // 开发或生产环境服务的公共基础路径，默认/
     plugins: [
@@ -36,10 +37,12 @@ export default defineConfig(({ command, mode }: ConfigEnv) => {
         mockPath: 'mock', // 解析根目录下的mock文件夹
         // enable: true, // 3.0版本用enable，之前用localEnabled，是否启用 mock 功能
 
-        // localEnabled: command === 'serve',
-        localEnabled: true, // 开发生产环境都用
-
-        // enable:command ==='serve'
+        localEnabled: command === 'serve', // 开发环境开关
+        prodEnabled: command !== 'serve' && prodMock, // 生产打包开关
+        supportTs: true, // 打开后，可以读取 ts ⽂件模块。请注意，打开后将⽆法监视.js ⽂件。
+        // // 如果生产环境开启了 mock 功能,默认在main.ts注入代码以启动mock
+        injectCode: ` import { setupProdMockServer } from '../mock';
+          setupProdMockServer(); `,
       }),
       viteCompression({
         verbose: true, // 是否在控制台中输出压缩结果

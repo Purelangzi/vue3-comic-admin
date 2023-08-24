@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { constantRoute } from './routes'
 import { useUserInfoStore } from '@/store/modules/user'
 // import {ElMessage} from 'element-plus'
@@ -8,7 +8,7 @@ import getPageTitle from '@/utils/getPageTitle'
 NProgress.configure({ showSpinner: false })
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: constantRoute,
   // 切换到新路由时，页面滚到顶部，
   scrollBehavior() {

@@ -58,7 +58,7 @@ defineExpose({
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-
+    height: 436px;
     :deep(.el-card) {
       margin-right: 0;
     }

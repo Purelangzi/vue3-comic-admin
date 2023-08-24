@@ -10,7 +10,6 @@ import { viteMockServe } from 'vite-plugin-mock'
 import viteCompression from 'vite-plugin-compression'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { cdn } from 'vite-plugin-cdn2'
-import { unpkg } from 'vite-plugin-cdn2/url.js'
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }: ConfigEnv) => {
   const isDev = mode === 'development'
@@ -37,7 +36,9 @@ export default defineConfig(({ command, mode }: ConfigEnv) => {
         mockPath: 'mock', // 解析根目录下的mock文件夹
         // enable: true, // 3.0版本用enable，之前用localEnabled，是否启用 mock 功能
 
-        localEnabled: command === 'serve',
+        // localEnabled: command === 'serve',
+        localEnabled: true, // 开发生产环境都用
+
         // enable:command ==='serve'
       }),
       viteCompression({
@@ -46,7 +47,7 @@ export default defineConfig(({ command, mode }: ConfigEnv) => {
         threshold: 10240, // 如果体积大于阈值，将被压缩，单位为b，体积过小时请不要压缩，以免适得其反
         algorithm: 'gzip', // 压缩算法，可选['gzip'，' brotliccompress '，'deflate '，'deflateRaw']
         ext: '.gz', // 压缩算法
-        deleteOriginFile: true, // 源文件压缩后是否删除，删除就不能preview预览发布环境的效果
+        deleteOriginFile: false, // 源文件压缩后是否删除，默认false，这样才能在nginx静态结合动态压缩
       }),
       visualizer({ open: true }),
       cdn({
@@ -81,14 +82,15 @@ export default defineConfig(({ command, mode }: ConfigEnv) => {
         },
       }),
     ],
-    server: {
-      proxy: {
-        '/api': {
-          target: 'http://127.0.0.1:7001',
-          rewrite: (path) => path.replace(/^\/api/, ''),
-        },
-      },
-    },
+    // 开发阶段才代理跨域，上线后下面代码可以删除，后端cors解决
+    // server: {
+    //   proxy: {
+    //     '/api': {
+    //       target: 'http://47.113.197.109:7001',
+    //       rewrite: (path) => path.replace(/^\/api/, ''),
+    //     },
+    //   },
+    // },
     resolve: {
       alias: {
         '@': path.resolve('./src'), // 相对路径别名配置，使用 @ 代替 src

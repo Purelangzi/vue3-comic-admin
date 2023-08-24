@@ -61,8 +61,8 @@ const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
 const route = useRoute()
 const form = reactive({
-  account: '13539660702',
-  password: '13539660702',
+  account: '',
+  password: '',
   username: '',
 })
 const redirect = ref('')

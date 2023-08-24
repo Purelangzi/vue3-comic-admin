@@ -212,7 +212,9 @@ import {
   isAdd,
   excelTableColumns,
 } from './data/list-data'
-const ComicEdit = defineAsyncComponent(()=>import('./component/comic-edit.vue'))
+const ComicEdit = defineAsyncComponent(
+  () => import('./component/comic-edit.vue'),
+)
 
 const myTableRef = ref<InstanceType<typeof MyTable> | null>(null)
 const myFormRef = ref<InstanceType<typeof MyForm> | null>(null)

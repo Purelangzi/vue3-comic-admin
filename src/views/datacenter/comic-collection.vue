@@ -1023,7 +1023,6 @@ const startCollectLink = async () => {
         category_id: state.categoryId,
         page: i,
       }
-      // BUG 242
       const res = await $api.common.getNovelLink(params)
       if (res.code !== 200) {
         state.logDataCtAndCp =

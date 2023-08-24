@@ -4,7 +4,7 @@
       <img :src="userInfo.avatar ? userInfo.avatar : defaultUserimg" />
     </div>
     <div class="userInfo">
-      <h3>欢迎{{ userInfo && userInfo.username }},请开始你的工作吧！</h3>
+      <h3>欢迎 {{ userInfo && userInfo.username }}，请开始你的工作吧！</h3>
     </div>
   </div>
 </template>

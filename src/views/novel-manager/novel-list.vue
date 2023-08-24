@@ -211,7 +211,9 @@ import {
   excelTableColumns,
 } from './data/list-data'
 
-const NovelEdit = defineAsyncComponent(()=>import('./component/novel-edit.vue'))
+const NovelEdit = defineAsyncComponent(
+  () => import('./component/novel-edit.vue'),
+)
 const myTableRef = ref<InstanceType<typeof MyTable> | null>(null)
 const myFormRef = ref<InstanceType<typeof MyForm> | null>(null)
 

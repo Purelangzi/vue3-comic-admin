@@ -210,7 +210,9 @@ import {
   newChapterBtn,
 } from './data/list-data'
 
-const VideoEdit = defineAsyncComponent(()=>import('./component/video-edit.vue'))
+const VideoEdit = defineAsyncComponent(
+  () => import('./component/video-edit.vue'),
+)
 const myTableRef = ref<InstanceType<typeof MyTable> | null>(null)
 const myFormRef = ref<InstanceType<typeof MyForm> | null>(null)
 

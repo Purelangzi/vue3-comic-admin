@@ -170,7 +170,7 @@ const handleDrawer = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    margin-right: 26px;
     .lang {
       margin: 0 20px;
     }

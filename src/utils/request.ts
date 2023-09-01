@@ -11,7 +11,7 @@ declare module 'axios' {
 }
 const request = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_URL,
-  timeout: 25000,
+  timeout: 9000,
 })
 
 request.interceptors.request.use(

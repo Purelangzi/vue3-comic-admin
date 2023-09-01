@@ -149,7 +149,7 @@ const getData = async () => {
   try {
     const { data } = await getAccount(state.searchParams)
     // 解决查询时，接口total返回的是全部列表的个数
-    tableConfig!.total = data.data.length !== 1 ? data.total : 1
+    tableConfig!.total = !state.searchParams.username || !state.searchParams.phone ? data.total : 1
     tableConfig.tableData = data.data
     tableConfig.tableData.forEach((el) => {
       el.create_time = useDateFormat(el.create_time, 'YYYY-MM-DD HH:mm:ss')

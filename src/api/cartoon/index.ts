@@ -10,7 +10,7 @@ import {
 
 enum API {
   GetCategory = '/api/product/getCtcategory',
-  AddCategory = '/api/product/addCategory',
+  AddCategory = '/api/cartoon/addCategory',
   UpdateCategory = '/api/product/editCtcategory',
   DeleteCategory = '/api/product/deleteCtcategory',
 

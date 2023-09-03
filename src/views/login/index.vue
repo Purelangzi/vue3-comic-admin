@@ -162,8 +162,7 @@ watch(
 .login {
   width: 100%;
   height: 100vh;
-  background-color: #2d3a4b;
-
+  background: url('@/assets/images/login_bg.jpg') no-repeat;
   .welcome {
     margin-bottom: 40px;
     font-size: 20px;

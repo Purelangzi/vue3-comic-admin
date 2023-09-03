@@ -37,11 +37,6 @@
   -webkit-box-shadow: inset 0 0 6px #e4e4e4; 
 } 
 
-// 解决el-menu菜单折叠状态时子菜单悬浮的提示背景色为空白的问题
-.el-popper.is-light {
-  background-color: #000;
-}
-
 // el-form的标签效果
 label {
   font-weight: 700;

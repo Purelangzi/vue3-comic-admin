@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <el-row :gutter="20">
+    <el-row>
       <el-col :span="8" :xs="6" :sm="12"></el-col>
       <el-col :span="16" :xs="18" :sm="12">
         <el-form
@@ -162,7 +162,7 @@ watch(
 .login {
   width: 100%;
   height: 100vh;
-  background: url('@/assets/images/login_bg.jpg') no-repeat;
+  background: url('@/assets/images/login_bg.jpg');
   .welcome {
     margin-bottom: 40px;
     font-size: 20px;

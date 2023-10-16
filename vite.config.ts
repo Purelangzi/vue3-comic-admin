@@ -50,7 +50,7 @@ export default defineConfig(({ command, mode }: ConfigEnv) => {
         threshold: 10240, // 如果体积大于阈值，将被压缩，单位为b，体积过小时请不要压缩，以免适得其反
         algorithm: 'gzip', // 压缩算法，可选['gzip'，' brotliccompress '，'deflate '，'deflateRaw']
         ext: '.gz', // 压缩算法
-        deleteOriginFile: false, // 源文件压缩后是否删除，默认false，这样才能在nginx静态结合动态压缩
+        deleteOriginFile: true, // 源文件压缩后是否删除，默认false，这样才能在nginx静态结合动态压缩
       }),
       visualizer({ open: true }),
       cdn({
@@ -113,7 +113,7 @@ export default defineConfig(({ command, mode }: ConfigEnv) => {
     build: {
       target: 'es2020',
       outDir: 'dist', // 输出文件的目录
-      sourcemap: isProd, // 是否生成sourcemap文件,生产环境才关闭
+      sourcemap: !isProd, // 是否生成sourcemap文件,生产环境才关闭
       assetsInlineLimit: 4096, //默认4096,小于此阈值的导入或引用资源将内联为 base64 编码，以避免额外的 http 请求
       minify: 'terser', // 'terser' 相对较慢，但大多数情况下构建后的文件体积更小，需安装terser。'esbuild' 最小化混淆更快但构建后的文件相对更大
       cssCodeSplit: true, // 启用/禁用 CSS 代码拆分

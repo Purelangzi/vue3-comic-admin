@@ -270,7 +270,13 @@ const link1 = [
 ]
 
 // 去重
-const videoLink = [...new Set(link.map((el) => el.url))]
+const videoLink = link.reduce((acc:any, curr:any) => {
+  const found = acc.find((item:any) => item.url === curr.url);
+  if (!found) {
+    acc.push(curr);
+  }
+  return acc;
+}, []);
 const novelLink = link1.map((url) => ({ url }))
 export default [
   // 视频链接接口

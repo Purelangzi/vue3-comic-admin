@@ -31,17 +31,17 @@
         <div class="linkMain">
           <div class="link btn">
             <el-button
-              v-if="state.isStartCollect"
+              v-show="state.isStartCollect"
               type="primary"
               @click="startCollectCt"
             >
               开始采集
             </el-button>
             <el-button
-              v-else
+              v-show="!state.isStartCollect"
               type="primary"
               plain
-              @click="state.isStartCollect = true"
+              @click="cancelCollect(0)"
             >
               取消采集
             </el-button>
@@ -221,17 +221,17 @@
         <div class="linkMain">
           <div class="link btn">
             <el-button
-              v-if="state.isStartCollect"
+              v-show="state.isStartCollect"
               type="primary"
               @click="startCollectLink"
             >
               开始采集
             </el-button>
             <el-button
-              v-else
+              v-show="!state.isStartCollect"
               type="primary"
               plain
-              @click="state.isStartCollect = true"
+              @click="cancelCollect(1)"
             >
               取消采集
             </el-button>
@@ -391,7 +391,7 @@
           </el-table-column>
           <el-table-column prop="url" label="漫画小说链接" align="center">
             <template #default="{ row }">
-              {{ row }}
+              {{ row.url }}
               <i class="" @click="handleCopy(row.url)"></i>
             </template>
           </el-table-column>
@@ -465,17 +465,17 @@
         <div class="linkMain">
           <div class="link btn">
             <el-button
-              v-if="state.isStartCollect"
+              v-show="state.isStartCollect"
               type="primary"
               @click="startCollectChapter"
             >
               开始采集
             </el-button>
             <el-button
-              v-else
+            v-show="!state.isStartCollect"
               type="primary"
               plain
-              @click="state.isStartCollect = true"
+              @click="cancelCollect(0)"
             >
               取消采集
             </el-button>
@@ -733,7 +733,14 @@ const state = reactive({
 
 const radioCatroon = computed(() => radioCatroonValue.value === '1')
 const radioChpater = computed(() => radioChpaterValue.value === '1')
-
+const cancelCollect = (type:number) => {
+  state.isStartCollect = true
+  if (type === 0) {
+    radioCatroon.value ? (state.loadingDetail = false) : (state.loadingChapter = false)
+  } else {
+    state.loadingCtLnk = false
+  }
+}
 // 开始采集漫画信息
 const startCollectCt = async () => {
   state.logDataCt = ''
@@ -764,9 +771,10 @@ const startCollectCt = async () => {
         state.logDataCt
     }
     if (state.isStartCollect) {
-      state.logDataCt = `正在取消采集中，请稍等....\n` + state.logDataCt
-      break
+      state.logDataCt = `正在取消采集中，请稍等....\n` + state.logDataCt;
+      break;
     }
+
     if (platform && platform[0]) {
       if (platform[0] == 'mkzhan.com') {
         // item https://www.mkzhan.com/212350/
@@ -994,15 +1002,24 @@ const startCollectLink = async () => {
         platform: 1,
         page: i,
       }
-      const res = await $api.common.getCartoonLink(params)
-      if (res.code !== 200) {
+      try {
+        const res = await $api.common.getCartoonLink(params)
+        if (res.code !== 200) {
         state.logDataCtAndCp = `第${i}页采集失败\n` + state.logDataCtAndCp
-      } else {
-        state.logDataCtAndCp =
-          `正在采集第${i}页，共采集到${res.data.length}条数据\n` +
-          state.logDataCtAndCp
-        res.data.forEach((el: any) => state.link.cartoonCtLinkAll.push(el))
+        } else {
+          state.logDataCtAndCp =
+            `正在采集第${i}页，共采集到${res.data.length}条数据\n` +
+            state.logDataCtAndCp
+          res.data?.forEach((el: any) => state.link.cartoonCtLinkAll.push(el))
+        }
+      } catch (error) {
+        state.loadingCtLnk = false
+        state.logDataCtAndCp =`接口请求失败\n` +state.logDataCtAndCp
+        state.isStartCollect = true
+        console.log(error);
       }
+      
+      
     }
     state.pgCtLinkParams.totalNumLinkCt = state.link.cartoonCtLinkAll.length
     const { pageLinkCt, pageSizeLinkCt } = state.pgCtLinkParams
@@ -1023,16 +1040,24 @@ const startCollectLink = async () => {
         category_id: state.categoryId,
         page: i,
       }
-      const res = await $api.common.getNovelLink(params)
-      if (res.code !== 200) {
-        state.logDataCtAndCp =
-          `第${i}页采集失败,IP限制\n` + state.logDataCtAndCp
-      } else {
-        state.logDataCtAndCp =
-          `正在采集第${i}页，共采集到${res.data.length}条数据\n` +
-          state.logDataCtAndCp
-        res.data.forEach((el: any) => state.link.novelCtLinkAll.push(el))
+      try {
+        const res = await $api.common.getNovelLink(params)
+        if (res.code !== 200) {
+          state.logDataCtAndCp =
+            `第${i}页采集失败,IP限制\n` + state.logDataCtAndCp
+        } else {
+          state.logDataCtAndCp =
+            `正在采集第${i}页，共采集到${res.data.length}条数据\n` +
+            state.logDataCtAndCp
+          res.data?.forEach((el: any) => state.link.novelCtLinkAll.push(el))
+        }
+      } catch (error) {
+        state.loadingCtLnk = false
+        state.logDataCtAndCp =`接口请求失败\n` +state.logDataCtAndCp
+        state.isStartCollect = true
+        console.log(error);
       }
+      
     }
     // 如果采集的小说链接数据为空，使用mock
     if (!state.link.novelCtLinkAll.length) {
@@ -1058,15 +1083,23 @@ const startCollectLink = async () => {
       const params = {
         page: i,
       }
-      const res = await $api.common.getVideoLink(params)
-      if (res.code !== 200) {
-        state.logDataCtAndCp = `第${i}页采集失败\n` + state.logDataCtAndCp
-      } else {
-        state.logDataCtAndCp =
-          `正在采集第${i}页，共采集到${res.data.length}条数据\n` +
-          state.logDataCtAndCp
-        res.data.forEach((el: any) => state.link.videoCtLinkAll.push(el))
+      try {
+        const res = await $api.common.getVideoLink(params)
+        if (res.code !== 200) {
+          state.logDataCtAndCp = `第${i}页采集失败\n` + state.logDataCtAndCp
+        } else {
+          state.logDataCtAndCp =
+            `正在采集第${i}页，共采集到${res.data.length}条数据\n` +
+            state.logDataCtAndCp
+          res.data?.forEach((el: any) => state.link.videoCtLinkAll.push(el))
+        }
+      } catch (error) {
+        state.loadingCtLnk = false
+        state.logDataCtAndCp =`接口请求失败\n` +state.logDataCtAndCp
+        state.isStartCollect = true
+        console.log(error);
       }
+      
     }
     // 如果采集的视频链接数据为空，使用mock
     if (!state.link.videoCtLinkAll.length) {
@@ -1604,12 +1637,23 @@ const sliceArray = (data: any, page: number, pageSize: number) => {
 }
 
 const handleCopy = (url: string) => {
-  if (!isSupported) {
-    ElMessage.error('您的浏览器不支持Clipboard API')
-    return
+  // http协议下，navigator.clipboard为undefined
+  if(navigator.clipboard){
+    if (!isSupported) {
+      ElMessage.error('您的浏览器不支持Clipboard API')
+      return
+    }
+    copy(url)
+    ElMessage.success('已复制')
+  } else {
+    const input = document.createElement('input');
+    input.setAttribute('value', url);
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+    ElMessage.success('已复制')
   }
-  copy(url)
-  ElMessage.success('已复制')
 }
 watch(
   () => state.activeName,
